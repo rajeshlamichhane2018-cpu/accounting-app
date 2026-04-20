@@ -13,20 +13,33 @@ import {
 export default function Dashboard() {
   const [data, setData] = useState<any[]>([]);
 
+  // ================= FETCH DATA =================
   useEffect(() => {
     fetch("/api/transactions")
       .then((res) => res.json())
-      .then(setData)
+      .then((result) => {
+        console.log("API DATA:", result);
+
+        // 🔥 IMPORTANT FIX
+        const safe = Array.isArray(result)
+          ? result
+          : result?.data || [];
+
+        setData(safe);
+      })
       .catch(() => setData([]));
   }, []);
 
-  const income = data
-    .filter((t) => t.type === "income")
-    .reduce((a, b) => a + b.amount, 0);
+  // ================= SAFE DATA =================
+  const safeData = Array.isArray(data) ? data : [];
 
-  const expense = data
+  const income = safeData
+    .filter((t) => t.type === "income")
+    .reduce((a, b) => a + Number(b.amount), 0);
+
+  const expense = safeData
     .filter((t) => t.type === "expense")
-    .reduce((a, b) => a + b.amount, 0);
+    .reduce((a, b) => a + Number(b.amount), 0);
 
   const balance = income - expense;
 
@@ -35,8 +48,10 @@ export default function Dashboard() {
     { name: "Expense", value: expense },
   ];
 
+  // ================= UI =================
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
+      {/* Header */}
       <div>
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <p className="text-gray-500">Overview of your finances</p>
@@ -86,10 +101,10 @@ export default function Dashboard() {
       <div className="bg-white p-6 rounded-xl shadow">
         <h3 className="font-semibold mb-4">Recent Transactions</h3>
 
-        {data.length === 0 ? (
+        {safeData.length === 0 ? (
           <p className="text-gray-400">No transactions yet</p>
         ) : (
-          data.slice(0, 5).map((t, i) => (
+          safeData.slice(0, 5).map((t, i) => (
             <div
               key={i}
               className="flex justify-between p-3 bg-gray-50 rounded-lg mb-2"
