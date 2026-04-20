@@ -1,29 +1,57 @@
+"use client";
+import { usePathname } from "next/navigation";
 import "./globals.css";
+import Link from "next/link";
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+
+  const path = usePathname();
   return (
     <html lang="en">
-      <body style={{ margin: 0, display: "flex" }}>
-        
-        {/* Sidebar */}
-        <div style={{
-          width: "220px",
-          background: "#111",
-          color: "#fff",
-          height: "100vh",
-          padding: "20px"
-        }}>
-          <h2>💰 Finance</h2>
+      <body className="bg-gray-100">
+        <div className="flex min-h-screen">
+          {/* Sidebar */}
+          <aside className="w-64 bg-white border-r p-5">
+            <h1 className="text-xl font-bold mb-6">💰 Finance</h1>
 
-          <p><a href="/dashboard" style={{color:"#fff"}}>Dashboard</a></p>
-          <p><a href="/transactions" style={{color:"#fff"}}>Transactions</a></p>
+            <nav className="space-y-2">
+              <Link
+                href="/dashboard"
+                className="block px-3 py-2 rounded-lg bg-blue-600 text-white"
+              >
+                Dashboard
+              </Link>
+
+              <Link
+                href="/income"
+                className="block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-200"
+              >
+                Income
+              </Link>
+
+              <Link
+                href="/expense"
+                className="block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-200"
+              >
+                Expense
+                
+              </Link>
+              <Link href="/dues" className="block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-200">
+
+    Dues
+
+  </Link>
+  <Link href="/reports">Reports</Link>
+            </nav>
+          </aside>
+
+          {/* Main */}
+          <main className="flex-1 p-6">{children}</main>
         </div>
-
-        {/* Main */}
-        <div style={{ flex: 1, padding: "20px" }}>
-          {children}
-        </div>
-
       </body>
     </html>
   );
