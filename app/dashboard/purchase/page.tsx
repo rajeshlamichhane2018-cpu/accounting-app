@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { NEPALI_FISCAL_MONTHS } from "@/lib/vat-period";
 
 type PurchaseRecord = {
   _id?: string;
@@ -71,6 +72,8 @@ function formatDate(value?: string) {
   if (Number.isNaN(date.getTime())) return value;
   return date.toLocaleDateString("en-GB");
 }
+
+const fiscalYearOptions = ["2082", "2083"];
 
 export default function PurchasePage() {
   const [purchases, setPurchases] = useState<PurchaseRecord[]>([]);
@@ -239,7 +242,11 @@ export default function PurchasePage() {
             </label>
 
             <select className="w-full rounded-lg border p-2">
-              <option>2082</option>
+              {fiscalYearOptions.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -247,9 +254,11 @@ export default function PurchasePage() {
             <label className="mb-2 block text-sm font-medium">Month</label>
 
             <select className="w-full rounded-lg border p-2">
-              <option>MAGH</option>
-              <option>FALGUN</option>
-              <option>CHAITRA</option>
+              {NEPALI_FISCAL_MONTHS.map((month) => (
+                <option key={month} value={month}>
+                  {month}
+                </option>
+              ))}
             </select>
           </div>
 

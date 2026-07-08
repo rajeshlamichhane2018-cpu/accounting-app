@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { NEPALI_FISCAL_MONTHS } from "@/lib/vat-period";
 
 type FormState = {
   fiscalYear: string;
@@ -38,6 +39,8 @@ const initialFormState: FormState = {
   totalAmount: "",
   remarks: "",
 };
+
+const fiscalYearOptions = ["2082", "2083"];
 
 function toNumber(value: string) {
   const parsed = Number(value);
@@ -134,11 +137,17 @@ export default function NewPurchasePage() {
         <div className="grid gap-4 md:grid-cols-2">
           <label className="space-y-2">
             <span className="block text-sm font-medium">Fiscal Year</span>
-            <input
+            <select
               value={form.fiscalYear}
               onChange={(event) => updateField("fiscalYear", event.target.value)}
               className="w-full rounded-lg border p-2"
-            />
+            >
+              {fiscalYearOptions.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
           </label>
 
           <label className="space-y-2">
@@ -148,9 +157,11 @@ export default function NewPurchasePage() {
               onChange={(event) => updateField("month", event.target.value)}
               className="w-full rounded-lg border p-2"
             >
-              <option value="MAGH">MAGH</option>
-              <option value="FALGUN">FALGUN</option>
-              <option value="CHAITRA">CHAITRA</option>
+              {NEPALI_FISCAL_MONTHS.map((month) => (
+                <option key={month} value={month}>
+                  {month}
+                </option>
+              ))}
             </select>
           </label>
 

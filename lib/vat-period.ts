@@ -5,7 +5,7 @@ export type VatPeriodResult = {
   warning?: string;
 };
 
-const nepaliMonths = [
+export const NEPALI_FISCAL_MONTHS = [
   "POUSH",
   "MAGH",
   "FALGUN",
@@ -50,7 +50,7 @@ export function getNepaliVatPeriodFromDate(
   if (!date) return null;
 
   const adMonthIndex = date.getMonth();
-  const month = nepaliMonths[adMonthIndex];
+  const month = NEPALI_FISCAL_MONTHS[adMonthIndex];
 
   // TODO: Replace fallback with accurate AD to BS Nepali calendar conversion later.
   const fiscalYear = String(adMonthIndex >= 6 ? date.getFullYear() + 57 : date.getFullYear() + 56);

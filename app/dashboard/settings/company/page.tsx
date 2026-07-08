@@ -64,6 +64,8 @@ const screenshotFallbackState: CompanyFormState = {
   taxPeriod: "MAGH",
 };
 
+const fiscalYearOptions = ["2082", "2083"];
+
 function Field({
   label,
   children,
@@ -347,11 +349,17 @@ export default function CompanySettingsPage() {
 
           <Section title="C. Tax Settings">
             <Field label="Fiscal Year">
-              <input
+              <select
                 value={form.fiscalYear}
                 onChange={(event) => updateField("fiscalYear", event.target.value)}
                 className="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none transition focus:border-blue-500"
-              />
+              >
+                {fiscalYearOptions.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
             </Field>
             <Field label="Tax Period">
               <input

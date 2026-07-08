@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { getNepaliVatPeriodFromDate } from "@/lib/vat-period";
+import { NEPALI_FISCAL_MONTHS, getNepaliVatPeriodFromDate } from "@/lib/vat-period";
 
 type ScanResult = {
   date?: string;
@@ -34,6 +34,8 @@ type ReviewFormState = {
   totalAmount: string;
   remarks: string;
 };
+
+const fiscalYearOptions = ["2082", "2083"];
 
 type ScanItemState = {
   id: string;
@@ -760,24 +762,37 @@ function ScanItemCard({
               <span className="block text-sm font-medium text-gray-700">
                 Fiscal Year <span className="text-red-500">*</span>
               </span>
-              <input
+              <select
                 value={item.form.fiscalYear}
                 onChange={(event) => onChange(item.id, "fiscalYear", event.target.value)}
                 className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 outline-none transition focus:border-blue-500"
                 required
-              />
+              >
+                {fiscalYearOptions.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
             </label>
 
             <label className="space-y-2">
               <span className="block text-sm font-medium text-gray-700">
                 Month <span className="text-red-500">*</span>
               </span>
-              <input
+              <select
                 value={item.form.month}
                 onChange={(event) => onChange(item.id, "month", event.target.value)}
                 className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 uppercase outline-none transition focus:border-blue-500"
                 required
-              />
+              >
+                <option value="">Select month</option>
+                {NEPALI_FISCAL_MONTHS.map((month) => (
+                  <option key={month} value={month}>
+                    {month}
+                  </option>
+                ))}
+              </select>
             </label>
 
             <label className="space-y-2">
