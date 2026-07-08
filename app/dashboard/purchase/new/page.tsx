@@ -122,9 +122,9 @@ export default function NewPurchasePage() {
   };
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Add Purchase</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">Add Purchase</h1>
         <p className="text-sm text-muted-foreground">
           Create a new purchase ledger entry
         </p>
@@ -132,7 +132,7 @@ export default function NewPurchasePage() {
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 rounded-xl border bg-white p-6 shadow-sm dark:bg-neutral-900"
+        className="space-y-6 rounded-xl border bg-white p-4 shadow-sm dark:bg-neutral-900 sm:p-6"
       >
         <div className="grid gap-4 md:grid-cols-2">
           <label className="space-y-2">

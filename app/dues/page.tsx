@@ -46,10 +46,10 @@ export default function DuesPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Dues</h1>
+      <h1 className="text-2xl font-bold sm:text-3xl">Dues</h1>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-3">
+      <form onSubmit={handleSubmit} className="max-w-xl space-y-3">
         <input
           placeholder="Name"
           value={name}
@@ -83,7 +83,7 @@ export default function DuesPage() {
         {data.map((d) => (
           <div
             key={d._id}
-            className="flex justify-between p-3 bg-gray-100 rounded"
+            className="flex flex-col gap-3 rounded bg-gray-100 p-3 sm:flex-row sm:items-center sm:justify-between"
           >
             <div>
               <p className="font-semibold">{d.name}</p>

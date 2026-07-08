@@ -479,9 +479,11 @@ export default function PurchaseScanPage() {
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">AI Bill Scanner</h1>
+        <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+          AI Bill Scanner
+        </h1>
         <p className="mt-1 text-sm text-gray-500">
           Capture bills from mobile camera, bulk photos, or ZIP upload. Review everything before saving.
         </p>
@@ -506,7 +508,7 @@ export default function PurchaseScanPage() {
       ) : null}
 
       <div className="grid gap-6 xl:grid-cols-3">
-        <section className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+        <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
           <h2 className="text-lg font-semibold text-gray-900">A. Camera / Single Photo</h2>
           <p className="mt-1 text-sm text-gray-500">
             Use your phone camera to click a bill and upload it directly.
@@ -546,7 +548,7 @@ export default function PurchaseScanPage() {
           </div>
         </section>
 
-        <section className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+        <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
           <h2 className="text-lg font-semibold text-gray-900">B. Bulk Photo Upload</h2>
           <p className="mt-1 text-sm text-gray-500">
             Select multiple bill photos and scan them one by one.
@@ -596,7 +598,7 @@ export default function PurchaseScanPage() {
           </div>
         </section>
 
-        <section className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+        <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
           <h2 className="text-lg font-semibold text-gray-900">C. ZIP Upload</h2>
           <p className="mt-1 text-sm text-gray-500">
             Upload a ZIP file containing multiple bill photos.
@@ -630,7 +632,7 @@ export default function PurchaseScanPage() {
         </section>
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-lg font-semibold text-gray-900">Scan Summary</h2>

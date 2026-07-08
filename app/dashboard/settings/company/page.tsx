@@ -216,9 +216,11 @@ export default function CompanySettingsPage() {
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Company Settings</h1>
+        <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+          Company Settings
+        </h1>
         <p className="mt-1 text-sm text-gray-500">
           Configure the master company profile used across purchases and exports.
         </p>
@@ -237,7 +239,7 @@ export default function CompanySettingsPage() {
       ) : null}
 
       {loading ? (
-        <div className="rounded-xl border border-gray-200 bg-white p-6 text-sm text-gray-500 shadow-sm">
+        <div className="rounded-xl border border-gray-200 bg-white p-4 text-sm text-gray-500 shadow-sm sm:p-6">
           Loading company settings...
         </div>
       ) : (

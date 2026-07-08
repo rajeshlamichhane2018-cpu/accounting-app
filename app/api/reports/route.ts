@@ -1,36 +1,106 @@
-import { NextResponse } from "next/server";
-import connectDB from "@/lib/mongodb";
-import Transaction from "@/models/Transaction";
+import { NextRequest, NextResponse } from "next/server";
+import dbConnect from "@/lib/mongodb";
+import Company from "@/models/Company";
+import PurchaseLedger from "@/models/PurchaseLedger";
+import { NEPALI_FISCAL_MONTHS } from "@/lib/vat-period";
 
-export async function GET() {
+type PurchaseLedgerRecord = {
+  fiscalYear?: string;
+  month?: string;
+  taxableAmount?: number;
+  vatAmount?: number;
+  totalAmount?: number;
+};
+
+type ReportSummary = {
+  purchaseCount: number;
+  taxableAmount: number;
+  vatAmount: number;
+  totalAmount: number;
+};
+
+export async function GET(request: NextRequest) {
   try {
-    await connectDB();
+    await dbConnect();
 
-    const transactions = await Transaction.find();
+    const searchParams = request.nextUrl.searchParams;
+    const company = await Company.findOne({ isDefault: true }).lean();
+    const fiscalYear = (
+      searchParams.get("fiscalYear") ||
+      company?.fiscalYear ||
+      "2082"
+    ).trim();
 
-    // Total Income
-    const totalIncome = transactions
-      .filter((t) => t.type === "income")
-      .reduce((sum, t) => sum + t.amount, 0);
+    const purchases = (await PurchaseLedger.find({
+      fiscalYear,
+    })
+      .sort({ date: 1, createdAt: 1 })
+      .lean()) as PurchaseLedgerRecord[];
 
-    // Total Expense
-    const totalExpense = transactions
-      .filter((t) => t.type === "expense")
-      .reduce((sum, t) => sum + t.amount, 0);
+    const monthMap = new Map(
+      NEPALI_FISCAL_MONTHS.map((month) => [
+        month,
+        {
+          month,
+          purchaseCount: 0,
+          taxableAmount: 0,
+          vatAmount: 0,
+          totalAmount: 0,
+        },
+      ])
+    );
 
-    // Balance
-    const balance = totalIncome - totalExpense;
+    purchases.forEach((purchase) => {
+      const normalizedMonth = String(purchase.month || "").toUpperCase();
+      const month = NEPALI_FISCAL_MONTHS.find(
+        (entry) => entry === normalizedMonth
+      );
+
+      if (!month) return;
+
+      const row = monthMap.get(month)!;
+      row.purchaseCount += 1;
+      row.taxableAmount += Number(purchase.taxableAmount || 0);
+      row.vatAmount += Number(purchase.vatAmount || 0);
+      row.totalAmount += Number(purchase.totalAmount || 0);
+    });
+
+    const monthlyRows = NEPALI_FISCAL_MONTHS.map((month) => monthMap.get(month)!);
+
+    const summary = purchases.reduce<ReportSummary>(
+      (acc, purchase) => {
+        acc.purchaseCount += 1;
+        acc.taxableAmount += Number(purchase.taxableAmount || 0);
+        acc.vatAmount += Number(purchase.vatAmount || 0);
+        acc.totalAmount += Number(purchase.totalAmount || 0);
+        return acc;
+      },
+      {
+        purchaseCount: 0,
+        taxableAmount: 0,
+        vatAmount: 0,
+        totalAmount: 0,
+      }
+    );
 
     return NextResponse.json({
       success: true,
-      totalIncome,
-      totalExpense,
-      balance,
-      totalTransactions: transactions.length,
+      data: {
+        fiscalYear,
+        companyName: company?.companyName || "",
+        taxPeriod: company?.taxPeriod || "",
+        summary,
+        monthlyRows,
+      },
     });
-  } catch (error) {
+  } catch (error: any) {
+    console.error("GET Reports Error:", error);
+
     return NextResponse.json(
-      { success: false, message: "Server Error" },
+      {
+        success: false,
+        message: error?.message || "Failed to load reports.",
+      },
       { status: 500 }
     );
   }

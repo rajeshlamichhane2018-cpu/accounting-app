@@ -50,15 +50,15 @@ export default function Dashboard() {
 
   // ================= UI =================
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">Dashboard</h1>
         <p className="text-gray-500">Overview of your finances</p>
       </div>
 
       {/* Cards */}
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid gap-4 md:grid-cols-3">
         <div className="bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
           <p className="text-gray-500 text-sm">Total Income</p>
           <h2 className="text-2xl font-bold text-green-600">
@@ -82,10 +82,10 @@ export default function Dashboard() {
       </div>
 
       {/* Chart */}
-      <div className="bg-white p-6 rounded-xl shadow">
+      <div className="bg-white p-4 rounded-xl shadow sm:p-6">
         <h3 className="font-semibold mb-4">Income vs Expense</h3>
 
-        <div className="h-64">
+        <div className="h-64 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData}>
               <XAxis dataKey="name" />
@@ -98,7 +98,7 @@ export default function Dashboard() {
       </div>
 
       {/* Transactions */}
-      <div className="bg-white p-6 rounded-xl shadow">
+      <div className="bg-white p-4 rounded-xl shadow sm:p-6">
         <h3 className="font-semibold mb-4">Recent Transactions</h3>
 
         {safeData.length === 0 ? (

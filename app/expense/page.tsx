@@ -21,7 +21,7 @@ export default function ExpensePage() {
 
   return (
     <div className="max-w-xl space-y-4">
-      <h1 className="text-2xl font-bold">Add Expense</h1>
+      <h1 className="text-2xl font-bold sm:text-3xl">Add Expense</h1>
 
       <input
         placeholder="Title"
